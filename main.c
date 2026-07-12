@@ -1,8 +1,10 @@
 #include <stdio.h>
 
-int CheckIn(char input, char array[] ){
+char operators[] = {'+' , '-' , '*' , '/' , '%' , '=' , '<' , '>' , '!' } ;
+
+int CheckIn(char input, char **array[] ){
 	int is_exists ;
-	int ArrayLen = sizeof(*array)/sizeof(array[0]) ;
+	int ArrayLen = sizeof(**array)/sizeof(array[0]) ;
 	for(int i = 0 ; i<ArrayLen ; i++){
 		if ( array[i] == input){
 			is_exists = 1 ;
@@ -20,7 +22,7 @@ int GetFlow(char ch ){
 	if( ch>='A' || ch<='Z' || ch>='0' || ch<='9' || ch>='a' || ch<='z'){
 		flow = 0 ;
 	}
-	else if ( CheckIn(ch,operators)==1){
+	else if ( CheckIn( ch,operators)==1){
 		flow = 1 ;
 	}
 	else{
@@ -30,12 +32,11 @@ int GetFlow(char ch ){
 	return flow ;
 }
 
+
 int main(){ // this main() will later be converted into lexer() function and this main.c will convert into lexer.h or lexer.c that will be used in later main.c
 	
 	char *tokens[] = {};
 	FILE *code = fopen("sample.txt" , "r") ;
-
-	char operators[] = {'+' , '-' , '*' , '/' , '%' , '=' , '<' , '>' , '!' } ;
 	
 	char temp[] = {} ;
 	int i = 0 ;
