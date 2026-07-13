@@ -2,9 +2,9 @@
 
 char operators[] = {'+' , '-' , '*' , '/' , '%' , '=' , '<' , '>' , '!' } ;
 
-int CheckIn(char input, char **array[] ){
+int CheckIn(char input, char array[] ){
 	int is_exists ;
-	int ArrayLen = sizeof(**array)/sizeof(array[0]) ;
+	int ArrayLen = sizeof(*array)/sizeof(array[0]) ;
 	for(int i = 0 ; i<ArrayLen ; i++){
 		if ( array[i] == input){
 			is_exists = 1 ;
@@ -35,17 +35,54 @@ int GetFlow(char ch ){
 
 int main(){ // this main() will later be converted into lexer() function and this main.c will convert into lexer.h or lexer.c that will be used in later main.c
 	
-	char *tokens[] = {};
+	int num_of_tok = 0 ;
+	char *tokens[num_of_tok] = {};
 	FILE *code = fopen("sample.txt" , "r") ;
 	
-	char temp[] = {} ;
 	int i = 0 ;
+	char temp[i] = {} ;
+
 	int LenCode = sizeof(*code)/sizeof(code[0]) ;
-	
-	while(fgetc(code)!=EOF){
-		int flow ; // flow = 0 for AZaz09_ and flow = 1 for operators and for character in signs but not in operators will make flow = -1 change in flow will append characters stored in temp[] will append in tokens[] .. rest if it is in signs but not in operators.. so it will directly append in tokens[]   
-		char ch=fgetc(code) ;
-		flow = GetFlow(ch) ;
+	int lexing = 1 ;
+	int iteration = 0 ;
+	while(lexing==1){
+		char ch = fgetc(code) ;
+		int flow = GetFlow(ch) ; // flow = 0 for AZaz09_ and flow = 1 for operators and for character in signs but not in operators will make flow = -1 change in flow will append characters stored in temp[] will append in tokens[] .. rest if it is in signs but not in operators.. so it will directly append in tokens[]   
+		int previous_flow ;
+		if(iteration==0){ previous_flow = flow ; } //a fix for first iteration.. else previous flow will be undeclared for first iteration.
+
+		if(flow!=previous_flow){
+			temp[i] = '\0' ;
+			i++ ;
+
+			tokens[num_of_tok] = temp ;
+			num_of_tok++ ;
+
+			temp={} ;
+			i = 0 ;
+
+			temp[i]=ch;
+			i++ ;
+		}
+		else{
+			temp[i] = ch ;
+			i++ ;
+
+		}
+		
+		previous_flow = flow ; 
+		iteration++ ;
+
+		if(ch==EOF){
+			lexing = 0 ;
+			
+			temp[i] = '\0' ;
+			i++ ;
+
+			tokens[num_of_tok] = temp ;
+			num_of_tok++ ;
+		}
 	}
+
 }
 
