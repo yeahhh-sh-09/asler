@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include<stdlib.h>
 
 char operators[] = {'+' , '-' , '*' , '/' , '%' , '=' , '<' , '>' , '!' } ;
 
@@ -19,7 +20,7 @@ int CheckIn(char input, char array[] ){
 
 int GetFlow(char ch ){
 	int flow ;
-	if( ch>='A' || ch<='Z' || ch>='0' || ch<='9' || ch>='a' || ch<='z'){
+	if( (ch>='A' && ch<='Z') || (ch>='0' && ch<='9' ) || (ch>='a' && ch<='z') || (ch == '_' )){
 		flow = 0 ;
 	}
 	else if ( CheckIn( ch,operators)==1){
@@ -42,7 +43,6 @@ int main(){ // this main() will later be converted into lexer() function and thi
 	int i = 0 ;
 	char temp[i] = {} ;
 
-	int LenCode = sizeof(*code)/sizeof(code[0]) ;
 	int lexing = 1 ;
 	int iteration = 0 ;
 	while(lexing==1){
@@ -58,7 +58,7 @@ int main(){ // this main() will later be converted into lexer() function and thi
 			tokens[num_of_tok] = temp ;
 			num_of_tok++ ;
 
-			temp={} ;
+			temp[0]='\0';
 			i = 0 ;
 
 			temp[i]=ch;
@@ -83,6 +83,15 @@ int main(){ // this main() will later be converted into lexer() function and thi
 			num_of_tok++ ;
 		}
 	}
+
+	fclose(code);
+
+	FILE *file = fopen("hello.txt" , "w" ) ;
+	int size_tok = sizeof(tokens)/sizeof(tokens[0]);
+	for(int k=0 ; k < size_tok ; k++ ){
+		fprintf(file , "%s ," , tokens[k] ) ;
+	}
+	fclose(file);
 
 }
 
